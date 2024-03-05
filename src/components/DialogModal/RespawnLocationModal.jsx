@@ -70,6 +70,8 @@ export default function RespawnLocationModal({
                   onChange={(e) => setRepawnLocation(e.target.value)}
                 >
                   <option value="sauna">Sauna</option>
+                  <option value="drunkengoose">Drunken Goose</option>
+
                   <option value="kitchen">Karen&apos;s Kitchen</option>
                 </select>
                 <button
