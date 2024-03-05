@@ -151,7 +151,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
         <div className="w-1/2 p-2 flex flex-col gap-0.5">
           <div className="flex flex-row items-center gap-2">
             <input
-              type="text"
+              type="password"
               className="px-2 border py-1 outline-none rounded"
               value={sUrl}
               onChange={(e) => setSUrl(e.target.value)}
@@ -424,7 +424,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
     <div className="w-full flex flex-col gap-1 items-center py-24">
       <div className="flex flex-row items-center gap-2">
         <input
-          type="text"
+          type="password"
           className="px-2 border py-1 outline-none rounded"
           value={sUrl}
           onChange={(e) => setSUrl(e.target.value)}
