@@ -225,7 +225,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
             <i className="fa fa-refresh"></i> Refresh Data
           </button>
           <button
-            disabled={refreshing}
+            disabled={true}
             className={`disabled:bg-red-700 disabled:cursor-progress flex flex-row items-center bg-red-500 border px-2 py-1 rounded-md text-white`}
           >
             <i className="fa fa-refresh"></i> Save Shutdown
@@ -253,7 +253,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
             >
               <div
                 className={
-                  "border-b flex flex-row justify-star items-center gap-2"
+                  "border-b flex flex-row justify-star items-center gap-2 overflow-x-scroll"
                 }
               >
                 <span className={`${bot.BOT.browser && "animate-pulse"}`}>
@@ -285,6 +285,19 @@ $$/       $$/   $$/ $$$$$$$$/ `}
                 <div className="flex flex-row items-center gap-1">
                   <img className="w-4 h-4" src="/image/cur_coins.png" />
                   {coins.toLocaleString(2)}
+                </div>
+                <div
+                  className="flex flex-row items-center gap-1"
+                  title={bot.BOT.bees.map((f) => f.farmId).join(", ")}
+                >
+                  <img className="w-4 h-4" src="/image/honey.png" />
+                  {bot.BOT.bees.length}
+                </div>
+                <div
+                  className="flex flex-row items-center gap-1"
+                  title="Trust Score"
+                >
+                  👍 <span>{bot.BOT.data.player.trustScore.toFixed(2)}</span>
                 </div>
               </div>
               <div className="flex flex-col">
