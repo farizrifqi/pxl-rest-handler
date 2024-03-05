@@ -365,7 +365,10 @@ $$/       $$/   $$/ $$$$$$$$/ `}
                             <button
                               onClick={() => openBrowser([wallet])}
                               className="button-control"
-                              disabled={bot.BOT.browser && bot.BOT.page}
+                              disabled={
+                                (bot.BOT.browser && bot.BOT.page) ||
+                                (os && os.toString().includes("linux"))
+                              }
                             >
                               Open Browser
                             </button>
@@ -410,7 +413,11 @@ $$/       $$/   $$/ $$$$$$$$/ `}
         </div>
         <hr className="my-2" />
         <div className="flex items-center gap-1">
-          <button onClick={() => openBrowser()} className="button-control">
+          <button
+            onClick={() => openBrowser()}
+            className="button-control"
+            disabled={os && os.toString().includes("linux")}
+          >
             Open Browser
           </button>
           <button onClick={() => closeBrowser()} className="button-control">
