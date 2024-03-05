@@ -20,6 +20,7 @@ export default function IndexPage() {
     isLoaded,
     socketUrl,
     setSocketUrl,
+    os,
   } = useContext(AppContext);
 
   // const [bots, setBots] = useState([]);
@@ -35,27 +36,27 @@ export default function IndexPage() {
   let [isOpenModalRespawn, setIsOpenModalRespawn] = useState(false);
   let [isOpenModalCooking, setIsOpenModalCooking] = useState(false);
 
-  // useEffect(() => {
-  //   if (socket) {
-  //     socket.on("connect", () => {
-  //       setConnected(true);
-  //     });
-  //     socket.on("disconnect", () => {
-  //       setBots([]);
-  //       setConnected(false);
-  //     });
-  //     socket.on("botsData", (data) => {
-  //       setBots(JSON.parse(data));
-  //     });
-  //     socket.on("locationData", (data) => {
-  //       console.log({ data });
-  //       setLocations(JSON.parse(data));
-  //     });
-  //     socket.on("logs", (data) => {
-  //       updateMonitorLogs(data);
-  //     });
-  //   }
-  // }, [connected]);
+  useEffect(() => {
+    // if (socket) {
+    //   socket.on("connect", () => {
+    //     setConnected(true);
+    //   });
+    //   socket.on("disconnect", () => {
+    //     setBots([]);
+    //     setConnected(false);
+    //   });
+    //   socket.on("botsData", (data) => {
+    //     setBots(JSON.parse(data));
+    //   });
+    //   socket.on("locationData", (data) => {
+    //     console.log({ data });
+    //     setLocations(JSON.parse(data));
+    //   });
+    //   socket.on("logs", (data) => {
+    //     updateMonitorLogs(data);
+    //   });
+    // }
+  }, [connected]);
 
   // const updateMonitorLogs = (newLogs) => {
   //   setMonitorLogs((old) => [newLogs, ...old]);
@@ -114,6 +115,7 @@ export default function IndexPage() {
   const refreshData = () => {
     setRereshing(true);
     socket.emit("requestData", "botsData");
+    socket.emit("requestData", "regularData");
     setTimeout(() => {
       setRereshing(false);
     }, 2000);
@@ -163,6 +165,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
               Connect
             </button>
           </div>
+          <p>OS: {os}</p>
           <Disclosure defaultOpen={true}>
             <Disclosure.Button
               className={`font-bold border px-2 py-1 text-left`}

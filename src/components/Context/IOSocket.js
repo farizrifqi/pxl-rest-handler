@@ -12,6 +12,7 @@ export default function SocketContextProvider({ children }) {
     const [isLoaded, setIsloaded] = useState(false)
     const [socketUrl, setSocketUrl] = useState("ws://localhost:2601");
     const [locations, setLocations] = useState([]);
+    const [os, setOS] = useState("null")
 
     useEffect(() => {
         if (typeof window !== "undefined" && window.localStorage) setIsloaded(true)
@@ -31,6 +32,11 @@ export default function SocketContextProvider({ children }) {
                 setConnected(true);
 
                 setBots(JSON.parse(data));
+            });
+            socket.on("regularData", (data) => {
+                data = JSON.parse(data)
+                setOS(data.device)
+                console.log(data.device)
             });
             socket.on("locationData", (data) => {
                 setLocations(JSON.parse(data));
@@ -66,7 +72,7 @@ export default function SocketContextProvider({ children }) {
 
     // }, [])
     return (
-        <AppContext.Provider value={{ bots, setBots, socket, connected, initializeSocket, monitorLogs, isLoaded, socketUrl, setSocketUrl }}>
+        <AppContext.Provider value={{ bots, setBots, socket, connected, initializeSocket, monitorLogs, isLoaded, socketUrl, setSocketUrl, os }}>
             {children}
         </AppContext.Provider>
     );
