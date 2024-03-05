@@ -34,9 +34,10 @@ export default function SocketContextProvider({ children }) {
                 setBots(JSON.parse(data));
             });
             socket.on("regularData", (data) => {
-                data = JSON.parse(data)
-                setOS(data.device)
-                console.log(data.device)
+                try {
+                    data = JSON.parse(data)
+                    setOS(data.device)
+                } catch (err) { }
             });
             socket.on("locationData", (data) => {
                 setLocations(JSON.parse(data));

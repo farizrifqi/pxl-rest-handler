@@ -31,7 +31,7 @@ export default function IndexPage() {
   const [sUrl, setSUrl] = useState(socketUrl);
   // ! Interacted Wallet
   const [interactedWalletOnModal, setInteractedWalletOnModal] = useState([]);
-
+  const [selectedWorld, setSelectedWorld] = useState("30");
   // ! Modal
   let [isOpenModalRespawn, setIsOpenModalRespawn] = useState(false);
   let [isOpenModalCooking, setIsOpenModalCooking] = useState(false);
@@ -74,7 +74,11 @@ export default function IndexPage() {
   const openBrowser = (accounts = selectedBots) => {
     socket.emit(
       "doAction",
-      JSON.stringify({ action: "openAccount", accounts })
+      JSON.stringify({
+        action: "openAccount",
+        accounts,
+        worldId: selectedWorld,
+      })
     );
   };
   const closeBrowser = (accounts = selectedBots) => {
@@ -150,6 +154,17 @@ $$ |       $$ /$$  |$$ |_____
 $$ |      $$ |  $$ |$$       |
 $$/       $$/   $$/ $$$$$$$$/ `}
         </pre>
+        <div className="flex flex-col justify-center py-2 text-left w-fit">
+          <b className="uppercase">World</b>
+          <input
+            type="number"
+            value={selectedWorld}
+            min="1"
+            max="99"
+            onChange={(e) => setSelectedWorld(e.target.value)}
+            className="border px-1 py-0.5 rounded outline-none w-24"
+          />
+        </div>
         <div className="w-1/2 p-2 flex flex-col gap-0.5">
           <div className="flex flex-row items-center gap-2">
             <input
@@ -184,8 +199,9 @@ $$/       $$/   $$/ $$$$$$$$/ `}
       </div>
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-1.5">
-          <div>
-            Total Accounts: {bots.length} <i className="fa fa-honey"></i>
+          <div>Total Accounts: {bots.length}</div>
+          <div className="text-xs">
+            Selected Accounts: {selectedBots.length}
           </div>
         </div>
         <div className="flex flex-row items-center gap-2 text-lg font-bold border-lime-400 border rounded-md px-2 py-1 bg-blue-900 text-white">
