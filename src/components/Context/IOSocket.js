@@ -13,7 +13,6 @@ export default function SocketContextProvider({ children }) {
     const [socketUrl, setSocketUrl] = useState("ws://localhost:2601");
     const [locations, setLocations] = useState([]);
     const [os, setOS] = useState("null")
-
     useEffect(() => {
         if (typeof window !== "undefined" && window.localStorage) setIsloaded(true)
 
@@ -47,6 +46,8 @@ export default function SocketContextProvider({ children }) {
             });
         }
     }, [connected, socketUrl]);
+
+
     const initializeSocket = (link) => {
         localStorage.setItem("socketUrl", link);
         setSocketUrl(link)
@@ -60,6 +61,7 @@ export default function SocketContextProvider({ children }) {
         setSocket(s)
         // setTimeout(() => { console.log({ bots }) }, 5000)
     }
+
     // useEffect(() => {
     //     socket.on("connect", () => {
     //         setConnected(true)
@@ -73,7 +75,7 @@ export default function SocketContextProvider({ children }) {
 
     // }, [])
     return (
-        <AppContext.Provider value={{ bots, setBots, socket, connected, initializeSocket, monitorLogs, isLoaded, socketUrl, setSocketUrl, os }}>
+        <AppContext.Provider value={{ bots, setBots, socket, connected, initializeSocket, monitorLogs, isLoaded, socketUrl, setSocketUrl, os, }}>
             {children}
         </AppContext.Provider>
     );

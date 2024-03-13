@@ -17,9 +17,9 @@ body {
 }
 
 .disclosure-button-bot {
-  @apply py-0.5 border-b font-bold text-left overflow-x-scroll;
+  @apply py-0.5 border-b font-bold text-left;
 }
 
 .disclosure-wrapper-bot {
-  @apply py-1;
+  @apply py-1 overflow-x-scroll;
 }

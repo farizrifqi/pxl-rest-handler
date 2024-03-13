@@ -6,6 +6,7 @@ export const cookRecipes = [
   { name: "Plain Omelet", value: 1, time: 10 },
   { name: "Popberry Pie", value: 2, time: 24 },
   { name: "Popberry Loaf", value: 3, time: 24 },
+  { name: "Grumpkin Pie", value: 4, time: 30 },
 ];
 
 export default function CookingModal({

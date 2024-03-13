@@ -6,6 +6,8 @@ import { Dialog, Disclosure, Transition } from "@headlessui/react";
 import RespawnLocationModal from "../DialogModal/RespawnLocationModal";
 import CookingModal from "../DialogModal/CookingModal";
 import { AppContext } from "../Context/IOSocket";
+import NotesComponent from "../Notes";
+import AccountInfoModal from "../DialogModal/AccountInfo";
 
 // const socket = io("ws://localhost:2601", {
 //   transports: ["websocket"],
@@ -31,32 +33,11 @@ export default function IndexPage() {
   const [sUrl, setSUrl] = useState(socketUrl);
   // ! Interacted Wallet
   const [interactedWalletOnModal, setInteractedWalletOnModal] = useState([]);
-  const [selectedWorld, setSelectedWorld] = useState("30");
+  const [selectedWorld, setSelectedWorld] = useState("55");
   // ! Modal
   let [isOpenModalRespawn, setIsOpenModalRespawn] = useState(false);
   let [isOpenModalCooking, setIsOpenModalCooking] = useState(false);
-
-  useEffect(() => {
-    // if (socket) {
-    //   socket.on("connect", () => {
-    //     setConnected(true);
-    //   });
-    //   socket.on("disconnect", () => {
-    //     setBots([]);
-    //     setConnected(false);
-    //   });
-    //   socket.on("botsData", (data) => {
-    //     setBots(JSON.parse(data));
-    //   });
-    //   socket.on("locationData", (data) => {
-    //     console.log({ data });
-    //     setLocations(JSON.parse(data));
-    //   });
-    //   socket.on("logs", (data) => {
-    //     updateMonitorLogs(data);
-    //   });
-    // }
-  }, [connected]);
+  let [isOpenModalAccountInfo, setIsOpenModalAccountInfo] = useState(false);
 
   // const updateMonitorLogs = (newLogs) => {
   //   setMonitorLogs((old) => [newLogs, ...old]);
@@ -124,7 +105,6 @@ export default function IndexPage() {
       setRereshing(false);
     }, 2000);
   };
-
   const openRespawnModal = (wallet) => {
     setIsOpenModalRespawn(true);
     setInteractedWalletOnModal(wallet);
@@ -133,14 +113,18 @@ export default function IndexPage() {
     setIsOpenModalCooking(true);
     setInteractedWalletOnModal(wallet);
   };
+  const openAccountModal = (wallet) => {
+    setIsOpenModalAccountInfo(true);
+    setInteractedWalletOnModal(wallet);
+  };
   if (!isLoaded) {
     return <>Loading...</>;
   }
   return socket ? (
     <div className="w-full flex flex-col gap-1">
-      <div className="flex flex-row items-tart justify-between my-2">
+      <div className="grid grid-cols-1 lg:flex lg:flex-row items-tart justify-between my-2">
         <pre
-          className={`select-none ${
+          className={`lg:block hidden select-none ${
             !connected ? "text-red-600" : "text-green-500"
           } font-bold py-5`}
         >
@@ -197,7 +181,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
           </Disclosure>
         </div>
       </div>
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-col lg:flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-1.5">
           <div>Total Accounts: {bots.length}</div>
           <div className="text-xs">
@@ -216,7 +200,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
             .reduce((partialSum, a) => partialSum + a, 0)}{" "}
           $PIXELS
         </div>
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center gap-2">
           <button
             onClick={refreshData}
             disabled={refreshing}
@@ -225,18 +209,25 @@ $$/       $$/   $$/ $$$$$$$$/ `}
             <i className="fa fa-refresh"></i> Refresh Data
           </button>
           <button
+            onClick={() => setSelectedBots([])}
+            disabled={selectedBots.length < 1}
+            className={`disabled:bg-gray-200 disabled:cursor-progress flex flex-row items-center border px-2 py-1 rounded-md text-black bg-gray-200`}
+          >
+            <i className="fa fa-refresh"></i> Unselect
+          </button>
+          <button
             disabled={true}
-            className={`disabled:bg-red-700 disabled:cursor-progress flex flex-row items-center bg-red-500 border px-2 py-1 rounded-md text-white`}
+            className={`disabled:bg-red-700 disabled:cursor-progress flex flex-row items-center bg-red-500 border px-2 py-1 rounded-md text-white hidden`}
           >
             <i className="fa fa-refresh"></i> Save Shutdown
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-5 gap-1 text-sm w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-1 text-xs w-full">
         {bots.map((bot, i) => {
           const disabled = bot.BOT.status != null;
           const wallet = bot.BOT.data.player.cryptoWallets[0].address;
-
+          const accUsername = bot.BOT.data.player.username;
           const coins = bot.BOT.data.player.coinInventory.find(
             (c) => c.currencyId == "cur_coins"
           )?.balance;
@@ -245,15 +236,16 @@ $$/       $$/   $$/ $$$$$$$$/ `}
           )?.balance;
           return (
             <div
-              onClick={() => updateSelectedBots(wallet)}
               key={i}
+              title={`A`}
               className={`bg-white border rounded-md px-3 py-2 drop-shadow-md flex flex-col gap-1 w-full hover:cursor-default ${
                 selectedBots.includes(wallet) ? "border-blue-500" : ""
               }`}
             >
               <div
+                onClick={() => openAccountModal([wallet])}
                 className={
-                  "border-b flex flex-row justify-star items-center gap-2 overflow-x-scroll"
+                  "border-b flex flex-row justify-star items-center gap-2 hover:cursor-pointer"
                 }
               >
                 <span className={`${bot.BOT.browser && "animate-pulse"}`}>
@@ -262,9 +254,9 @@ $$/       $$/   $$/ $$$$$$$$/ `}
                 <span className="text-lg font-bold">
                   {bot.BOT.data.player.username}
                 </span>
-                <span className="border px-2 text-xs font-extralight rounded">
+                {/* <span className="border px-2 text-xs font-extralight rounded">
                   {censorAddress(wallet)}
-                </span>
+                </span> */}
               </div>
               <div className="w-full">
                 <div
@@ -320,7 +312,7 @@ $$/       $$/   $$/ $$$$$$$$/ `}
                             <button
                               onClick={() => harvestBee([wallet])}
                               disabled={disabled || bot.BOT.bees.length < 1}
-                              className="button-control"
+                              className="button-control hidden"
                               title={
                                 disabled
                                   ? `Currently doing ${bot.BOT.status}.`
@@ -397,6 +389,17 @@ $$/       $$/   $$/ $$$$$$$$/ `}
                     </>
                   )}
                 </Disclosure>
+                <button
+                  className={`px-2 py-1 border m-2 rounded-lg  ${
+                    selectedBots.includes(wallet)
+                      ? "bg-gray-200"
+                      : "bg-white hover:bg-gray-100"
+                  }`}
+                  onClick={() => updateSelectedBots(wallet)}
+                >
+                  {selectedBots.includes(wallet) ? "Selected" : "Select"}
+                </button>
+                <NotesComponent username={accUsername} />
               </div>
             </div>
           );
@@ -407,7 +410,9 @@ $$/       $$/   $$/ $$$$$$$$/ `}
           Multi Controller
         </h2>
         <div className="flex flex-col">
-          <p className="font-bold">Selected:</p>
+          <p className="font-bold">
+            Selected: ({selectedBots.length} accounts)
+          </p>
           <div className="flex flex-row my-1 gap-1">
             {selectedBots.map((bot, i) => {
               const bt = bots.find(
@@ -436,7 +441,10 @@ $$/       $$/   $$/ $$$$$$$$/ `}
           <button onClick={() => closeBrowser()} className="button-control">
             Close Browser
           </button>
-          <button onClick={() => harvestBee()} className="button-control">
+          <button
+            onClick={() => harvestBee()}
+            className="button-control hidden"
+          >
             Harvest
           </button>
           <button onClick={() => getEnergy()} className="button-control">
@@ -457,6 +465,13 @@ $$/       $$/   $$/ $$$$$$$$/ `}
         interactedWalletOnModal={interactedWalletOnModal}
         setIsOpenModalCooking={setIsOpenModalCooking}
         isOpenModalCooking={isOpenModalCooking}
+      />
+      <AccountInfoModal
+        bots={bots}
+        interactedWalletOnModal={interactedWalletOnModal}
+        setInteractedWalletOnModal={setInteractedWalletOnModal}
+        setIsOpenModalAccountInfo={setIsOpenModalAccountInfo}
+        isOpenModalAccountInfo={isOpenModalAccountInfo}
       />
     </div>
   ) : (
