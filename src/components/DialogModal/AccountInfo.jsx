@@ -10,10 +10,13 @@ export default function AccountInfoModal({
   setIsOpenModalAccountInfo,
 }) {
   const bot =
-    bots.find(
-      (b) =>
-        b.BOT.data.player.cryptoWallets[0].address == interactedWalletOnModal[0]
-    ) ?? false;
+    bots
+      .filter((b) => b.BOT.publicData?.createdAt)
+      .find(
+        (b) =>
+          b.BOT.data.player.cryptoWallets[0].address ==
+          interactedWalletOnModal[0]
+      ) ?? false;
   const gettt = bot ? true : false;
   const closeModal = () => {
     setIsOpenModalAccountInfo(false);
