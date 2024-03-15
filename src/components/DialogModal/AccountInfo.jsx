@@ -22,48 +22,54 @@ export default function AccountInfoModal({
     setIsOpenModalAccountInfo(false);
     setInteractedWalletOnModal([]);
   };
-
+  if (!bot.BOT?.publicData) return <></>;
   return (
-    bot && (
-      <Dialog
-        open={isOpenModalAccountInfo && gettt}
-        className="relative z-50 text-xs"
-        onClose={closeModal}
-      >
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-3">
-            <Dialog.Title className={`text-lg font-bold my-2`}>
-              Account Info
-            </Dialog.Title>
-            <span className="py-2">
-              Created At:{" "}
-              {dayjs(bot.BOT.publicData.createdAt).format("DD/MM/YYYY")}
-            </span>
-            <div className="flex flex-col gap-1">
-              <div className="flex flex-col">
-                <span>Username: {bot.BOT.data.player.username}</span>
-                <span>Address: {interactedWalletOnModal[0]}</span>
-              </div>
-              <hr />
-              {Object.keys(bot.BOT.publicData.levels).length > 0 && (
+    <Dialog
+      open={isOpenModalAccountInfo && gettt}
+      className="relative z-50 text-xs"
+      onClose={closeModal}
+    >
+      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+      <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+        <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-3">
+          <Dialog.Title className={`text-lg font-bold my-2`}>
+            Account Info
+          </Dialog.Title>
+          <span className="py-2">
+            Created At:{" "}
+            {dayjs(bot?.BOT?.publicData?.createdAt).format("DD/MM/YYYY") ??
+              "Unknown"}
+          </span>
+          <div className="flex flex-col gap-1">
+            <div className="flex flex-col">
+              <span>Username: {bot.BOT.data.player.username}</span>
+              <span>Address: {interactedWalletOnModal[0]}</span>
+            </div>
+            <hr />
+            {bot?.BOT?.publicData?.levels &&
+              Object.keys(bot?.BOT?.publicData?.levels).length > 0 && (
                 <>
                   <b>Levels</b>
                   <div className="grid grid-cols-2">
-                    {Object.keys(bot.BOT.publicData.levels).map((farming) => (
-                      <span key={farming} className="uppercase">
-                        {farming}: lv {bot.BOT.publicData.levels[farming].level}
-                      </span>
-                    ))}
+                    {Object.keys(bot?.BOT?.publicData?.levels).map(
+                      (farming) => (
+                        <span key={farming} className="uppercase">
+                          {farming}: lv{" "}
+                          {bot?.BOT?.publicData?.levels[farming].level}
+                        </span>
+                      )
+                    )}
                   </div>
                   <hr />
                 </>
               )}
-              {Object.keys(bot.BOT.publicData.memberships).length > 0 && (
+
+            {bot?.BOT?.publicData?.memberships &&
+              Object.keys(bot?.BOT?.publicData?.memberships).length > 0 && (
                 <>
                   <b>Socials</b>
                   <div className="grid grid-cols-2">
-                    {Object.keys(bot.BOT.publicData.memberships).map(
+                    {Object.keys(bot?.BOT?.publicData?.memberships).map(
                       (social) => (
                         <span key={social} className="uppercase">
                           {social}
@@ -74,16 +80,15 @@ export default function AccountInfoModal({
                 </>
               )}
 
-              <button
-                onClick={closeModal}
-                className="px-2 py-1 border mt-2 hover:bg-gray-100"
-              >
-                Close
-              </button>
-            </div>
-          </Dialog.Panel>
-        </div>
-      </Dialog>
-    )
+            <button
+              onClick={closeModal}
+              className="px-2 py-1 border mt-2 hover:bg-gray-100"
+            >
+              Close
+            </button>
+          </div>
+        </Dialog.Panel>
+      </div>
+    </Dialog>
   );
 }

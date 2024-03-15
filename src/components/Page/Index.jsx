@@ -466,13 +466,15 @@ $$/       $$/   $$/ $$$$$$$$/ `}
         setIsOpenModalCooking={setIsOpenModalCooking}
         isOpenModalCooking={isOpenModalCooking}
       />
-      <AccountInfoModal
-        bots={bots}
-        interactedWalletOnModal={interactedWalletOnModal}
-        setInteractedWalletOnModal={setInteractedWalletOnModal}
-        setIsOpenModalAccountInfo={setIsOpenModalAccountInfo}
-        isOpenModalAccountInfo={isOpenModalAccountInfo}
-      />
+      {bots && bots[0]?.BOT?.publicData && bots[0]?.BOT?.data?.player && (
+        <AccountInfoModal
+          bots={bots}
+          interactedWalletOnModal={interactedWalletOnModal}
+          setInteractedWalletOnModal={setInteractedWalletOnModal}
+          setIsOpenModalAccountInfo={setIsOpenModalAccountInfo}
+          isOpenModalAccountInfo={isOpenModalAccountInfo}
+        />
+      )}
     </div>
   ) : (
     <div className="w-full flex flex-col gap-1 items-center py-24">
