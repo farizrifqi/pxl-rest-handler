@@ -33,7 +33,7 @@ export default function IndexPage() {
   const [sUrl, setSUrl] = useState(socketUrl);
   // ! Interacted Wallet
   const [interactedWalletOnModal, setInteractedWalletOnModal] = useState([]);
-  const [selectedWorld, setSelectedWorld] = useState("55");
+  const [selectedWorld, setSelectedWorld] = useState("75");
   // ! Modal
   let [isOpenModalRespawn, setIsOpenModalRespawn] = useState(false);
   let [isOpenModalCooking, setIsOpenModalCooking] = useState(false);
